@@ -1,0 +1,78 @@
+:root {
+  background-color: #171717;
+  padding: 0;
+  margin: 0;
+  color: white;
+  box-sizing: border-box;
+}
+h1 {
+  color: white;
+  text-align: center;
+  font-size: 48px;
+}
+h3 {
+  margin: 0;
+  font-size: large;
+}
+.blur {
+  filter: blur(0.5rem);
+  z-index: 1;
+}
+.result {
+  font-size: 90px;
+  position: absolute;
+  top: 45%;
+  left: 33.5%;
+}
+.options--container {
+  display: flex;
+  justify-content: space-around;
+}
+.options--container ::placeholder {
+  color: #c9c9c9;
+}
+.options--container .required {
+  background-color: rgba(133, 0, 0, 0.789);
+}
+.options--container div {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  justify-content: center;
+  align-items: center;
+  gap: 12.5px;
+}
+.options--container input {
+  max-width: 140px;
+  height: 28px;
+  background-color: #3e3e3e;
+  outline: none;
+  border: none;
+  padding-left: 10px;
+  color: white;
+}
+.options--container button {
+  padding: 7px 30px;
+}
+.back-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+}
+.game--board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 600px;
+  height: 600px;
+  gap: 10px;
+  margin: auto;
+}
+.game--board-box {
+  text-align: center;
+  background-color: #464646;
+  font-size: 9rem;
+  color: white;
+}
+.game--board-box:hover {
+  background-color: #595959;
+}
