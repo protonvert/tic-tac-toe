@@ -25,7 +25,17 @@ const Game = (() => {
 
   const computerPlayerSelection = () => {
     let rand = Math.floor(Math.random() * 9);
-    return rand;
+    if (gameboard[rand] === '') {
+      try {
+        gameboardPlaceMarker('o', rand);
+        // switchPlayer();
+      } catch {
+        console.log('draw');
+        Game.checkForDraw();
+      }
+    } else {
+      computerPlayerSelection();
+    }
   };
 
   const checkForDraw = () => {
@@ -146,15 +156,15 @@ const DisplayController = (() => {
         if (div.textContent === '') {
           // if text content is empty, place current players marker
           Game.gameboardPlaceMarker(Game.getCurrentPlayer().getMarker(), i);
-          div.textContent = Game.getCurrentPlayer().getMarker();
-          if (Game.isComputerPlayer()) {
-            Game.gameboardPlaceMarker(Game.getCurrentPlayer().getMarker(), Game.computerPlayerSelection());
-            div.textContent = Game.getCurrentPlayer().getMarker();
-          }
           Game.checkForWinner();
           div.textContent = Game.getCurrentPlayer().getMarker();
-          console.log(Game.gameboard);
+
           Game.switchPlayer();
+          if (Game.isComputerPlayer && Game.getCurrentPlayer().getName() === 'Computer') {
+            Game.computerPlayerSelection();
+            div.textContent = Game.getCurrentPlayer().getMarker();
+          }
+          console.log(Game.gameboard);
         }
       });
       grid.appendChild(div);
@@ -164,6 +174,7 @@ const DisplayController = (() => {
   const loadGame = () => {
     optionsContainer.innerHTML = '';
     grid = document.querySelector('.game--board');
+    Game.resetGameBoard();
     primeGrid();
     let backButton = document.createElement('button');
     backButton.textContent = 'Go Back';
@@ -230,8 +241,8 @@ const DisplayController = (() => {
     });
 
     playerVsComputer.addEventListener('click', () => {
-      console.log('test');
       if (singlePlayerName.value !== '') {
+        Game.setComputerPlayer();
         Game.addPlayer(player(singlePlayerName.value, 'x'));
         Game.addPlayer(player('Computer', 'o'));
         loadGame();
