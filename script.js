@@ -15,29 +15,6 @@ const player = (name, marker) => {
 const Game = (() => {
   let gameboard = ['', '', '', '', '', '', '', '', ''];
 
-  let computerPlayer = false;
-
-  const setComputerPlayer = () => {
-    computerPlayer = true;
-  };
-
-  const isComputerPlayer = () => computerPlayer;
-
-  const computerPlayerSelection = () => {
-    let rand = Math.floor(Math.random() * 9);
-    if (gameboard[rand] === '') {
-      try {
-        gameboardPlaceMarker('o', rand);
-        // switchPlayer();
-      } catch {
-        console.log('draw');
-        Game.checkForDraw();
-      }
-    } else {
-      computerPlayerSelection();
-    }
-  };
-
   const checkForDraw = () => {
     let isFull = true;
     for (let i = 0; i < gameboard.length; i++) {
@@ -47,6 +24,7 @@ const Game = (() => {
     }
     return isFull;
   };
+
   const winningCombos = [
     [0, 1, 2],
     [3, 4, 5],
@@ -129,9 +107,6 @@ const Game = (() => {
     resetPlayers,
     checkForWinner,
     checkForDraw,
-    setComputerPlayer,
-    isComputerPlayer,
-    computerPlayerSelection,
   };
 })();
 
@@ -139,7 +114,6 @@ const DisplayController = (() => {
   // dom elements, setting and retrieving them
   let optionsContainer;
   let playerVsPlayer;
-  let playerVsComputer;
   let singlePlayerName;
   let playerNameInput;
   const body = document.querySelector('body');
@@ -158,12 +132,7 @@ const DisplayController = (() => {
           Game.gameboardPlaceMarker(Game.getCurrentPlayer().getMarker(), i);
           Game.checkForWinner();
           div.textContent = Game.getCurrentPlayer().getMarker();
-
           Game.switchPlayer();
-          if (Game.isComputerPlayer && Game.getCurrentPlayer().getName() === 'Computer') {
-            Game.computerPlayerSelection();
-            div.textContent = Game.getCurrentPlayer().getMarker();
-          }
           console.log(Game.gameboard);
         }
       });
@@ -190,16 +159,7 @@ const DisplayController = (() => {
     const homeScreenHTML = `<div class="page-container">
     <h1>Tic-Tac-Toe</h1>
     <div class="options--container">
-      <div id="option-computer">
-        <h3>Player vs Computer</h3>
-        <input
-          type="text"
-          class="singlePlayerName"
-          placeholder="player name*"
-          required
-        />
-        <button id="computer-play">Play</button>
-      </div>
+        
       <div id="option-twoplayer">
         <h3>Player vs Player</h3>
         <input
@@ -221,7 +181,6 @@ const DisplayController = (() => {
     Game.resetPlayers(); // allows user to re-specify names
     body.innerHTML = homeScreenHTML;
     playerVsPlayer = document.querySelector('#twoplayer-play');
-    playerVsComputer = document.querySelector('#computer-play');
     optionsContainer = document.querySelector('.options--container');
     playerNameInput = document.querySelectorAll('.playerNameInput');
     singlePlayerName = document.querySelector('.singlePlayerName');
@@ -239,16 +198,6 @@ const DisplayController = (() => {
         });
       }
     });
-
-    playerVsComputer.addEventListener('click', () => {
-      if (singlePlayerName.value !== '') {
-        Game.setComputerPlayer();
-        Game.addPlayer(player(singlePlayerName.value, 'x'));
-        Game.addPlayer(player('Computer', 'o'));
-        loadGame();
-      }
-      Game.setComputerPlayer();
-    });
   };
 
   //   }
@@ -264,7 +213,7 @@ const DisplayController = (() => {
 
   const showResult = () => {
     pageContainer = document.querySelector('.page-container');
-    pageContainer.classList.add('blur');
+    // pageContainer.classList.add('blur');
     const result = document.createElement('div');
     result.classList.add('result');
     if (Game.checkForDraw()) {
@@ -272,7 +221,7 @@ const DisplayController = (() => {
     } else {
       result.textContent = `Winner is: ${Game.getCurrentPlayer().getName()}`;
     }
-    document.querySelector('body').appendChild(result);
+    optionsContainer.appendChild(result);
     grid.innerHTML = '';
     // Game.switchPlayer();
     setTimeout(() => {

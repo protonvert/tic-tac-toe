@@ -12,17 +12,20 @@ h1 {
 }
 h3 {
   margin: 0;
-  font-size: large;
+  font-size: 32px;
 }
 .blur {
   filter: blur(0.5rem);
   z-index: 1;
 }
 .result {
+  display: flex;
   font-size: 90px;
-  position: absolute;
-  top: 45%;
-  left: 33.5%;
+  margin: auto;
+  width: 800px;
+  /* height: 100vh; */
+  /* justify-content: center; */
+  align-items: center;
 }
 .options--container {
   display: flex;
@@ -37,22 +40,26 @@ h3 {
 .options--container div {
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 800px;
+  height: 30vh;
   justify-content: center;
   align-items: center;
-  gap: 12.5px;
+  gap: 20px;
 }
 .options--container input {
-  max-width: 140px;
+  /* max-width: 100%; */
+  width: 60%;
   height: 28px;
   background-color: #3e3e3e;
   outline: none;
   border: none;
   padding-left: 10px;
   color: white;
+  text-align: center;
 }
 .options--container button {
   padding: 7px 30px;
+  width: 60%;
 }
 .back-button {
   margin-top: 10px;
